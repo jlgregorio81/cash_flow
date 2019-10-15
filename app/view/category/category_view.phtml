@@ -1,0 +1,12 @@
+<h1>Cadastro de Cateogorias</h1>
+<hr>
+<form method="post" action="Request.php?class=CategoryCtr&method=run">
+    <!-- input hiddent to store the ID -->
+    <input type="hidden" name="id" value="<?=$this->model->getId()?>">
+    <label for="name">Nome:</label>
+    <input type="text" name="name" id="name" value="<?=$this->model->getName()?>"> <br>
+    <!-- command buttons -->
+    <input type="submit" name="command" value="Novo">
+    <input type="submit" name="command" value="Salvar">
+    <input type="submit" name="command" value="Excluir">
+</form>

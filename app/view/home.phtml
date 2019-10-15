@@ -1,0 +1,90 @@
+<?php
+use core\util\Session;
+use core\Application;
+
+if (!Session::getSession('active_user')) {
+    ?>
+    <h1>Bem vindo ao <?=Application::$APP_NAME?> </h1>
+    <h3>Faça o login!</h3>
+    <form method="post" action="Request.php?class=UserCtr&method=doLogin">
+        <label for="email">E-mail</label><br>
+        <input type="text" name="email" id="email"><br>
+        <label for="password">Senha</label><br>
+        <input type="password" name="password" id="password"><br>
+        <input type="submit" name="command" value="OK">
+        <input type="reset" name="command" value="Limpar">
+    </form>
+    <p><a href="Request.php?class=UserCtr&method=showView&action=new">Ainda não tem cadastro? Clique aqui!</a></p>
+<?php
+} else{
+    ?>
+    <h3>Bem vindo, <?=Session::getSession('active_user')->getName() ?></h3>
+    <?php
+}
+?>
+
+<?= \core\Application::$APP_NAME ?>!</h1>
+<hr>
+
+<?php
+$this->getExpensesChartData();
+$this->getReceiptsVsExpensesChartData();
+?>
+
+
+<div id="charts" style="width:900px;">
+
+    <div id="expenseschart" style="width: 450px; height: 400px; float:left">
+    </div>
+
+    <div id="resultchart" style="width: 450px; height: 400px; float:right">
+    </div>
+
+</div>
+
+<div style="clear:both"></div>
+
+
+
+
+<script type="text/javascript" src="core/vendor/google-chart/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(<?= $this->expensesChart ?>);
+        var options = {
+            title: 'Despesas do Mês Atual',
+            width: '450',
+            height: '240',
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('expenseschart'));
+        chart.draw(data, options);
+    }
+</script>
+
+
+
+
+<script language="JavaScript">
+    function drawChart() {
+        // Define the chart to be drawn.
+        var data = google.visualization.arrayToDataTable(<?= $this->expensesVsReceiptsChart ?>);
+        var options = {
+            legend: {
+                position: 'none'
+            },
+            title: 'Receitas X Despesas',
+            width: '450',
+            height: '240'
+        };
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.ColumnChart(document.getElementById('resultchart'));
+        chart.draw(data, options);
+    }
+    google.charts.setOnLoadCallback(drawChart);
+</script>

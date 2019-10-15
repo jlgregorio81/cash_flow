@@ -1,0 +1,32 @@
+<?php
+use core\Application;
+?>
+<h2>Relatório de Categorias</h2>
+<hr>
+<form method="post" action="Request.php?class=CategoryCtr&method=showReport">
+    <fieldset>
+        <legend>Escolha uma opção</legend>
+        <label for="select">Recuperar por:</label>
+        <select name="select" id="select" onchange="selectOption(this)">
+            <option selected value="all">Tudo</option>
+            <option value="name">Por nome</option>
+        </select>       
+        <input type="text" name="name" id="name" disabled>
+        <input type="submit" name="command" value="OK">
+    </fieldset>
+</form>
+
+<iframe src="<?="$this->rptFile"?>" style="width:800px; height:600px;" frameborder="0"></iframe>
+
+
+<script>
+    function selectOption(select){        
+        var name = document.getElementById("name");
+        if(select.selectedIndex  == 0){
+            name.disabled = true;            
+        } else {
+            name.disabled = false;
+            name.focus();
+        }           
+    }
+</script>

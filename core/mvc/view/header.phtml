@@ -1,0 +1,43 @@
+<?php
+use core\Application;
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Título aqui!</title>
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <h1><?= Application::$APP_NAME ?></h1>
+        </header>
+        <section id="active_user">
+            <p>Usuário ativo: <?=$this->activeUserName?></p>
+        </section>
+        <nav>
+            <ul>
+                <li><a href="index.php">Início</a></li>
+                <li>
+                    Categoria
+                    <ul>
+                        <li><a href="Request.php?class=CategoryCtr&method=showView">Cadastrar</a></li>
+                        <li><a href="Request.php?class=CategoryCtr&method=showList">Listar</a></li>
+                        <li><a href="Request.php?class=CategoryCtr&method=showReport">Relatório</a></li>
+                    </ul>
+                </li>
+                <li>
+                    Fluxo de Caixa
+                    <ul>
+                        <li><a href="Request.php?class=FlowCtr&method=showView">Lançamento</a></li>
+                        <li><a href="Request.php?class=FlowCtr&method=showList">Listar</a></li>
+                    </ul>
+                </li>
+                <a href="Request.php?class=UserCtr&method=doLogout">Sair</a>
+            </ul>
+        </nav>
+        <section id="content">

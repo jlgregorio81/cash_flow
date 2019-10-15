@@ -1,0 +1,26 @@
+<h1>Listagem de Categorias</h1>
+<hr>
+
+<!-- pay attention! now there is the 'page' paremeter - its values is always 1 -->
+<form method="post" action="Request.php?class=CategoryCtr&method=showList&page=1">
+    <label for="name">Nome:</label>
+    <br>
+    <input type="text" name="data[0]" id="name" value="<?= $this->sqlData[0] ?>">
+    <br>
+    <label for="limit">Registros por página</label>
+    <select name="limit" id="limit">
+        <option <?= $this->regPerPage == 5 ? "selected" : '' ?> value="5">5</option>
+        <option <?= $this->regPerPage == 10 ? "selected" : '' ?> value="10">10</option>
+        <option <?= $this->regPerPage == 20 ? "selected" : '' ?> value="20">20</option>
+    </select>
+    <br>
+    <input type="submit" name="command" value="OK">
+</form>
+<!-- listagem e paginação -->
+<?php
+    //..create the list
+    $this->createList($this->model, array('Nome'), array('getName'), 'CategoryCtr');
+    //..create the pagination controls
+    $this->createPagination('CategoryCtr');
+?>
+

@@ -1,0 +1,67 @@
+<h1>Lançamento de Fluxo de Caixa</h1>
+<hr>
+<form method="post" action="Request.php?class=FlowCtr&method=run">
+    <!-- input hiddent to store the ID -->
+    <input type="hidden" name="id" value="<?= $this->model->getId() ?>">
+    <label for="date">Data:</label>
+    <input type="date" readonly name="date" id="date" value="<?=$this->model->getDate()?>"> <br>
+    <label for="name">Tipo:</label>
+    <select name="type" id="type">
+        <option value="R" <?= $this->model->getType() == 'R' ? 'selected' : '' ?>>Receita</option>
+        <option value="E" <?= $this->model->getType() == 'E' ? 'selected' : '' ?>>Despesa</option>
+    </select><br>
+    <label for="category">Categoria:</label>
+    <select name="category" id="category">
+        <?php
+        if (!is_null($this->categories)) {
+            foreach ($this->categories as $category) {
+                ?>
+                <option value="<?= $category->getId() ?>" <?= $category->getId() == $this->model->getCategory()->getId() ? 'selected' : '' ?>><?= $category->getName() ?></option>
+            <?php
+        }
+    }
+    ?>
+    </select><br>
+    <label for="name">Descrição:</label>
+    <input type="text" name="description" required id="description" value="<?= $this->model->getDescription() ?>"> <br>
+    <label for="value">Valor:</label>
+    <input type="number" step="0.01" required name="value" id="value" value="<?= $this->model->getValue() ?>"> <br>
+    <!-- command buttons -->
+    <input type="submit" name="command" value="Novo">
+    <input type="submit" name="command" value="Salvar">
+    <input type="submit" name="command" value="Excluir">
+</form>
+
+<h3>Lançamentos do dia</h3>
+
+<p><strong>Saldo Anterior: </strong><?= \core\util\Strings::formatMoney($this->previousValue)?></p>
+
+<?php
+    $this->createList($this->flowList, array('Categoria','Descrição', 
+            'Tipo', 'Valor'), 
+            array('getCategoryAsString',
+            'getDescription','getType','getValue'), 
+            'FlowCtr');
+    //..no pagination in this case.
+?>
+
+<p><strong>Saldo do dia: </strong><?= \core\util\Strings::formatMoney($this->dayValue)?></p>
+<p><strong>Saldo atual: </strong><?= core\util\Strings::formatMoney($this->currentValue)?></p>
+
+<script>
+    //..script to set the date
+    window.onload = function() {             
+        //..set the date
+        if (document.getElementById('description').value == ''){                        
+            document.getElementById('date').valueAsDate = new Date();
+        }
+
+        //..show message - integrating PHP & JS
+        msg = '<?=$this->msg?>';
+        if(msg != '')
+            alert(msg);
+
+    }
+
+    
+</script>
