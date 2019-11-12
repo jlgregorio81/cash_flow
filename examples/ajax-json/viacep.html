@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Usando o Via Cep</title>
+</head>
+
+<body>
+
+    <form action="">
+        <!-- no evento onblur, chama a função 'findCep'  -->
+        <input onblur="findCep(this.value);" type="text" name="cep" id="cep" placeholder="Digite o cep">
+        <br>
+        <input type="text" name="logradouro" id="logradouro">
+        <br>
+        <input type="text" name="bairro" id="bairro">
+        <br>
+        <input type="text" name="localidade" id="localidade">
+        <br>
+        <input type="text" name="uf" id="uf">
+        <br>
+
+    </form>
+
+    <!-- incluir o JQuery -->
+    <script src="jquery-3.4.1.min.js"></script>
+    <!-- definir as funções  -->
+    <script>
+        //..função que busca o cep
+        function findCep() {
+            //..cria uma expressão regular para validar o cep
+            formatoCep = /^[0-9]{8}$/;
+            //..pega o cep pegando o valor do elemento de formulário
+            cep = $("#cep").val();
+            //..testa o formato do cep
+            if (!formatoCep.test(cep))
+                alert("Formato de Cep Inválido!");
+            else {
+                //..cria a url de requisição
+                url = "https://viacep.com.br/ws/" + cep + "/json/";
+                //..faz a requisição assíncrona
+                //..a função getJson precisa de dois parâmetros: a url e a função de callback (que trata o retorno da requisição)
+                $.getJSON(url, function (data) {
+                    //..se não houver a string 'erro' nos dados retornados, então, chama a função bindData (definida por mim)
+                    if (!("erro" in data))
+                        bindData(data);
+                    else
+                        alert("Dados não encontrados!");
+                });
+            }
+        }
+
+        //..a função bindData pega o retorno e vincula aos elementos de formulário
+        function bindData(data) {
+            //..se data não for nulo, então...
+            if (data != null) {
+                $("#logradouro").val(data['logradouro']);
+                $("#bairro").val(data['bairro']);
+                $("#localidade").val(data['localidade']);
+                $("#uf").val(data['uf']);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

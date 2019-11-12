@@ -112,4 +112,23 @@ final class UserCtr extends Controller
         }
     }
 
+    /**
+     * Verificar se o e-mail existe
+     */
+    public function emailExists(){
+        try{
+            //..verificar se existe uma variável get chamada 'email'
+            if(isset($this->get['email'])){
+                //..pega o e-mail
+                $email = $this->get['email'];
+                //..faz a consulta no banco de dados
+                $result = (new UserDao())->findByEmail($email);
+                //..envia uma resposta ao browser mediante o valor de result
+                echo is_null($result) ? "false" : "true";
+            }
+        } catch (\Exception $ex){
+            echo "Erro: {$ex->getMessage()}";
+        }
+    }
+
 }

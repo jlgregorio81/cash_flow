@@ -194,4 +194,36 @@ final class UserDao implements IDao
             $connection = null;
         }
     }
+
+    /**
+     * Method tha returns a UserModel according an email as input parameter.
+     */
+    public function findByEmail($email){
+        try {
+            $connection = Connection::getConnection();
+            $sql = "select * from \"user\" where email = :email";
+            $stmt = $connection->prepare($sql);
+            $stmt->bindValue(":email", $email);
+            $result = $stmt->execute();
+            $result = $stmt->fetchAll();
+            if ($result) {
+                $result = $result[0];
+                return new UserModel(
+                    $result['id'],
+                    $result['name'],
+                    $result['gender'],
+                    $result['email'],
+                    $result['status'],
+                    $result['type'],
+                    $result['photo']
+                );
+            } else {
+                return null;
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        } finally {
+            $connection = null;
+        }    
+    }
 }
